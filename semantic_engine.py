@@ -2,8 +2,9 @@ import gensim
 import pymorphy2
 from nltk.corpus import stopwords
 
+
 def load_w2v_model():
-    w2v_model = gensim.models.KeyedVectors.load_word2vec_format(r'C:\Users\smartyshin\NLP\1CNaturalLanguageHelper\ruwikiruscorpora_upos_skipgram_300_2_2018.vec.gz', encoding='utf-8')
+    w2v_model = gensim.models.KeyedVectors.load_word2vec_format(r'C:\Users\smartyshin\NLP\NaturalLanguage1CHelper\ruwikiruscorpora_upos_skipgram_300_2_2018.vec.gz', encoding='utf-8')
     print('word2vec model with ruwikiruscorpora loaded')
     return w2v_model
 

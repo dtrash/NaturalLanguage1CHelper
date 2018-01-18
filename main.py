@@ -1,6 +1,6 @@
 # from flask import Flask, jsonify
 
-import libs.semantic_engine as semantic_engine
+import semantic_engine as semantic_engine
 from settings import labels
 
 
@@ -9,7 +9,7 @@ from settings import labels
 
 # @app.route('/GetHelp')
 def get_help():
-    query_bank = 'хочу выставить счет покупателю'.split()
+    query_bank = 'программа медленно работает'.split()
     normalized_query = semantic_engine.canonize_words(query_bank)
     min_distance = 100
     closest_label = ''
