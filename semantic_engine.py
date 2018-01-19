@@ -2,9 +2,11 @@ import gensim
 import pymorphy2
 from nltk.corpus import stopwords
 
+from settings import path_to_corpora
+
 
 def load_w2v_model():
-    w2v_model = gensim.models.KeyedVectors.load_word2vec_format(r'C:\Users\smartyshin\NLP\NaturalLanguage1CHelper\ruwikiruscorpora_upos_skipgram_300_2_2018.vec.gz', encoding='utf-8')
+    w2v_model = gensim.models.KeyedVectors.load_word2vec_format(path_to_corpora(), encoding='utf-8')
     print('word2vec model with ruwikiruscorpora loaded')
     return w2v_model
 
@@ -26,11 +28,13 @@ def canonize_words(words: list) -> list:
     stop_words = stopwords.words('russian')
 
     normalized = []
+    morph_analyzer = pymorphy2.MorphAnalyzer()
+
     for w in words:
-        morph_analyzer = pymorphy2.MorphAnalyzer()
         forms = morph_analyzer.parse(w.lower())
         try:
             form = max(forms, key=lambda x: (x.score, x.methods_stack[0][2]))
+        # Нужно посмотреть какие исключения библиотеки здесь могут быть
         except Exception:
             form = forms[0]
             print(form)

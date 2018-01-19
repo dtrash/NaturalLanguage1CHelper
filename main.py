@@ -1,16 +1,16 @@
-# from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 import semantic_engine as semantic_engine
 from settings import labels
 
+model = semantic_engine.load_w2v_model()
+app = Flask(__name__)
 
-# app = Flask(__name__)
 
-
-# @app.route('/GetHelp')
+@app.route('/GetHelp', methods=['POST'])
 def get_help():
-    query_bank = 'программа медленно работает'.split()
-    normalized_query = semantic_engine.canonize_words(query_bank)
+    users_query = request.json['query']
+    normalized_query = semantic_engine.canonize_words(users_query.split())
     min_distance = 100
     closest_label = ''
     all_labels = labels()
@@ -20,8 +20,11 @@ def get_help():
             min_distance = label_distance
             closest_label = label
 
-    # return jsonify({'answer': closest_label})
-    return closest_label
+    return jsonify({
+        'answer': closest_label,
+        'normalized_user_query': normalized_query,
+        'form': all_labels[closest_label]['form_name']
+    })
 
 
 if __name__ == '__main__':
@@ -35,6 +38,5 @@ if __name__ == '__main__':
         * pymorphy2
         * nltk - with stopwords
     """
-    model = semantic_engine.load_w2v_model()
-    print(get_help())
-    # app.run(debug=True)
+    app.config['JSON_AS_ASCII'] = False
+    app.run(host='martyshin-s', debug=True)
