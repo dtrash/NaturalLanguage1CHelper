@@ -15,7 +15,8 @@ def get_help():
     closest_label = ''
     all_labels = labels()
     for label in all_labels:
-        label_distance = model.wmdistance(normalized_query, all_labels[label]['keywords'].split())
+        normalized_label = semantic_engine.canonize_words(all_labels[label]['keywords'].split())
+        label_distance = model.wmdistance(normalized_query, normalized_label)
         if label_distance < min_distance:
             min_distance = label_distance
             closest_label = label
